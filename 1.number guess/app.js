@@ -1,32 +1,31 @@
-let maximum =  parseInt(prompt("Enter the maximum number!"));
+let maximum = 100; // Set a default maximum
+const targetNum = Math.floor(Math.random() * maximum) + 1;
+let attempts = 0;
 
-while(!maximum){
-    let maximum =  parseInt(prompt("Please enter valid number!"));
-}
-const targetNum = Math.floor(Math.random()*maximum)+1;
-
-console.log(targetNum);
-
-let guess = parseInt(prompt("Enter your first guess!"));
-let attempts = 1;
-
-while(parseInt(guess)!== targetNum){
-    if(guess == 'q')
-    break;
+function checkGuess() {
+    const guessInput = document.getElementById('guessInput');
+    const messageElement = document.getElementById('message');
+    const guess = parseInt(guessInput.value);
     attempts++;
-    if(guess>targetNum)
-    {
-        guess = (prompt("Too high! Enter a new guess:"))
+
+    if (isNaN(guess)) {
+        messageElement.textContent = "Please enter a valid number!";
+    } else if (guess === targetNum) {
+        messageElement.textContent = `You got it! It took you ${attempts} guess${attempts === 1 ? '' : 'es'}.`;
+        guessInput.disabled = true;
+    } else if (guess > targetNum) {
+        messageElement.textContent = "Too high! Try again.";
+    } else {
+        messageElement.textContent = "Too low! Try again.";
     }
-    else{
-        guess = (prompt("Too low! Enter a new guess:"))
+
+    guessInput.value = '';
+    guessInput.focus();
+}
+
+// Optional: Add event listener for Enter key
+document.getElementById('guessInput').addEventListener('keyup', function(event) {
+    if (event.key === 'Enter') {
+        checkGuess();
     }
-}
-if(guess=='q')
-{
-    console.log("OK, you quit!")
-}
-else
-{
-    console.log(`You got it! It took you ${attempts} guess`);
-}
+});
